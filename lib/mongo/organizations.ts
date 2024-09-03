@@ -36,16 +36,16 @@ export async function getOrganizations(filter = {}, options: FindOptions = {}) {
 	try {
 		if (!organizations) await init();
 
-		const result = await users
+		const result = await organizations
 			.find({})
 			.limit(20)
-			.map((user) => ({ ...user, _id: user._id.toString() }))
+			.map((org) => ({ ...org, _id: org._id.toString() }))
 			.toArray();
 
-		return { users: result };
+		return { organizations: result };
 	} catch (error) {
-		return { error: 'failed to fetch users ' };
+		return { error: 'failed to fetch orgs ' };
 	}
 }
 
-export async function createUser(user: User) {}
+export async function createOrganization(org: Organization) {}
