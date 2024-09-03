@@ -3,15 +3,9 @@ import clientPromise from '.';
 
 let client;
 let db: Db;
-let users: Collection<Document>;
+let organizations: Collection<Document>;
 
-export interface User {
-	type: 'Member' | 'Advisor';
-	id: Number;
-	name: String;
-	email: String;
-	organizations: Array<String>; // array of organization IDs
-}
+export interface Organization {}
 
 async function init() {
 	if (db) return;
@@ -21,7 +15,8 @@ async function init() {
 		db = await client.db('sample_mflix');
 
 		db.command({ ping: 1 });
-		users = await db.collection('users');
+		organizations = await db.collection('organizations');
+
 		console.log('successfully connected to and pinged hourhero db');
 	} catch (error) {
 		// @ts-ignore
@@ -34,13 +29,12 @@ async function init() {
 })();
 
 /**
-		users = await db.collection('users');
  * API
  */
 
-export async function getUsers(filter = {}, options: FindOptions = {}) {
+export async function getOrganizations(filter = {}, options: FindOptions = {}) {
 	try {
-		if (!users) await init();
+		if (!organizations) await init();
 
 		const result = await users
 			.find({})
