@@ -1,9 +1,8 @@
 import { getUsers } from '@lib/mongo/users';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-// @ts-ignore
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-	if (req.method === 'POST') {
+	if (req.method === 'POST' || req.method === 'GET') {
 		try {
 			const { users, error } = await getUsers(req.body || {});
 			if (error) throw new Error(error);
@@ -15,7 +14,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		}
 	}
 
-	res.setHeader('Allow', ['POST']);
+	res.setHeader('Allow', ['POST', 'GET']);
 	res.status(425).end(`Method ${req.method} not allowed`);
 };
 
