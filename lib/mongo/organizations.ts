@@ -1,11 +1,17 @@
-import { Collection, Db, Document, FindOptions } from 'mongodb';
+import type { Collection, Db, Document, FindOptions } from 'mongodb';
 import clientPromise from '.';
 
 let client;
 let db: Db;
 let organizations: Collection<Document>;
 
-export interface Organization {}
+export interface Organization {
+	_id: String;
+	name: String;
+	memebers: Array<String>; // array if member ids
+	advisors: Array<String>; // array of advisor ids
+	events: Array<String>; // array of event ids
+}
 
 async function init() {
 	if (db) return;

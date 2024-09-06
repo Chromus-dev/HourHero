@@ -1,16 +1,21 @@
-import { Collection, Db, Document, FindOptions } from 'mongodb';
+import type { Collection, Db, Document, FindOptions } from 'mongodb';
 import clientPromise from '.';
 
 let client;
 let db: Db;
 let users: Collection<Document>;
 
+export interface UserOrg {
+	_id: String;
+	events: Array<String>; // array of event IDs
+	hours: Number; // sum of hours from events
+}
+
 export interface User {
 	type: 'Member' | 'Advisor';
-	id: Number;
 	name: String;
 	email: String;
-	organizations: Array<String>; // array of organization IDs
+	organizations: Array<UserOrg>; // array of organization IDs
 }
 
 async function init() {
@@ -18,7 +23,7 @@ async function init() {
 
 	try {
 		client = await clientPromise;
-		db = await client.db('sample_mflix');
+		db = await client.db('hourhero');
 
 		db.command({ ping: 1 });
 		users = await db.collection('users');
@@ -44,14 +49,26 @@ export async function getUsers(filter = {}, options: FindOptions = {}) {
 
 		const result = await users
 			.find({})
-			.limit(20)
+			// .limit(20)
 			.map((user) => ({ ...user, _id: user._id.toString() }))
 			.toArray();
 
 		return { users: result };
 	} catch (error) {
-		return { error: 'failed to fetch users ' };
+		return { error: 'failed to fetch users' };
 	}
 }
 
-export async function createUser(user: User) {}
+export async function createUser(user: User) {
+	try {
+		if (!users) await init();
+
+		const result = await users.insertOne(user);
+
+		console.log(`user inserted with _id: ${result.insertedId}`);
+		return { _id: result.insertedId };
+	} catch (error) {
+		console.error(error);
+		return { error: 'failed to create new user' };
+	}
+}
