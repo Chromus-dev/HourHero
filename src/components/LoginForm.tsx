@@ -17,13 +17,15 @@ const LoginForm = () => {
 			const response = await doCredentialLogin(formData);
 
 			if (!!response.error) {
-				setError(response.error.message);
+				//! setError
+				console.error(response.error.message);
 			} else {
 				router.push('/dashboard');
 			}
 		} catch (e) {
 			console.error(e);
-			setError('Check your credentials');
+			//! setError
+			console.error('Check your credentials');
 		}
 	}
 
