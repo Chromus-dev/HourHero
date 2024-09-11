@@ -5,7 +5,10 @@ import { doCredentialLogin } from '@/app/actions/userAuthentication';
 
 import { useRouter } from 'next/navigation';
 
+import { useState } from 'react';
+
 const LoginForm = () => {
+	const [error, setError] = useState('');
 	const router = useRouter();
 
 	async function handleFormSubmit(event: any) {
@@ -17,20 +20,19 @@ const LoginForm = () => {
 			const response = await doCredentialLogin(formData);
 
 			if (!!response.error) {
-				//! setError
-				console.error(response.error.message);
+				setError(response.error.message);
 			} else {
 				router.push('/dashboard');
 			}
 		} catch (e) {
 			console.error(e);
-			//! setError
-			console.error('Check your credentials');
+			setError('Check your credentials');
 		}
 	}
 
 	return (
 		<>
+			<div className="text-xl text-red-500">{error}</div>
 			<form
 				className="my-5 flex flex-col items-center border p-3 border-gray-200 rounded-md"
 				onSubmit={handleFormSubmit}

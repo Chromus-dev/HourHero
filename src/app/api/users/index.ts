@@ -1,4 +1,4 @@
-import { getUsers } from '@lib/mongo/users';
+import { getUsers } from '@/lib/mongo/users';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
