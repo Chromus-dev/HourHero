@@ -1,4 +1,4 @@
-import { auth } from '@/app/auth';
+import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import Image from 'next/image';
 import Logout from '@/components/Logout';
@@ -7,6 +7,8 @@ const Dashboard = async () => {
 	const session = await auth();
 
 	if (!session?.user) redirect('/');
+
+	console.log(session?.user);
 
 	return (
 		<div className="flex flex-col items-center m-4">

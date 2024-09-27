@@ -1,4 +1,4 @@
-import { createUser } from '@/lib/mongo/users';
+import { createUser } from '@/queries/users';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 // @ts-ignore

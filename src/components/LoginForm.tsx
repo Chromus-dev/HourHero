@@ -7,6 +7,10 @@ import { useRouter } from 'next/navigation';
 
 import { useState } from 'react';
 
+// import { cookies } from 'next/headers';
+
+// const csrfToken = cookies().get('authjs.csrf-token')?.value ?? '';
+
 const LoginForm = () => {
 	const [error, setError] = useState('');
 	const router = useRouter();
@@ -37,6 +41,8 @@ const LoginForm = () => {
 				className="my-5 flex flex-col items-center border p-3 border-gray-200 rounded-md"
 				onSubmit={handleFormSubmit}
 			>
+				{/* <input type="hidden" name="csrfToken" value={csrfToken} /> */}
+
 				<div className="my-2">
 					<label htmlFor="email">Email Address</label>{' '}
 					<input

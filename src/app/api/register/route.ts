@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
-import { createUser } from '@/app/queries/users';
+import { createUser } from '@/queries/users';
 import { dbConnection } from '@/lib/mongo';
 
 import bcrypt from 'bcryptjs';
 
 export const POST = async (request: Request) => {
-	const { firstName, lastName, email, password } = await request.json();
+	const { name, email, password } = await request.json();
 
 	// create DB connection
 	await dbConnection();
@@ -15,8 +15,7 @@ export const POST = async (request: Request) => {
 
 	// form a DB payload
 	const newUser = {
-		firstName,
-		lastName,
+		name,
 		password: hashedPassword,
 		email,
 	};
@@ -24,7 +23,7 @@ export const POST = async (request: Request) => {
 	// update the DB
 	try {
 		await createUser(newUser);
-		// console.log('created user', newUser);
+		console.log('created user', newUser);
 	} catch (error: any) {
 		return new NextResponse(error.message, {
 			status: 500,

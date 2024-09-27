@@ -1,4 +1,4 @@
-export interface Event {
+export interface EventDocument {
 	_id: String;
 	name: String;
 	date: Date;

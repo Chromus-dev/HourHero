@@ -13,8 +13,7 @@ const RegistrationForm = () => {
 		try {
 			const formData = new FormData(event.currentTarget);
 
-			const firstName = formData.get('firstName');
-			const lastName = formData.get('lastName');
+			const name = formData.get('name');
 			const email = formData.get('email');
 			const password = formData.get('password');
 
@@ -24,8 +23,7 @@ const RegistrationForm = () => {
 					'content-type': 'application/json',
 				},
 				body: JSON.stringify({
-					firstName,
-					lastName,
+					name,
 					email,
 					password,
 				}),
@@ -44,21 +42,12 @@ const RegistrationForm = () => {
 				onSubmit={handleSubmit}
 			>
 				<div className="my-2">
-					<label htmlFor="email">First Name</label>{' '}
+					<label htmlFor="email">Name</label>{' '}
 					<input
 						className="border mx-2 border-gray-500 rounded"
 						type="text"
-						name="firstName"
-						id="firstName"
-					/>
-				</div>
-				<div className="my-2">
-					<label htmlFor="email">Last Name</label>{' '}
-					<input
-						className="border mx-2 border-gray-500 rounded"
-						type="text"
-						name="lastName"
-						id="lastName"
+						name="name"
+						id="name"
 					/>
 				</div>
 
