@@ -1,10 +1,12 @@
 'use client';
 
+import { useState } from 'react';
 import SocialLogin from './SocialLogin';
 
 import { useRouter } from 'next/navigation';
 
 const RegistrationForm = () => {
+	const [error, setError] = useState('');
 	const router = useRouter();
 
 	async function handleSubmit(event: any) {
@@ -29,7 +31,9 @@ const RegistrationForm = () => {
 				}),
 			});
 
-			response.status === 201 && router.push('/');
+			if (response.statusText === 'userAlreadyExists')
+				setError('A user with that email already exists');
+			else response.status === 201 && router.push('/');
 		} catch (e: any) {
 			console.error(e.message);
 		}
@@ -37,6 +41,7 @@ const RegistrationForm = () => {
 
 	return (
 		<>
+			<div className="text-xl text-red-500">{error}</div>
 			<form
 				className="my-5 flex flex-col items-center border p-3 border-gray-200 rounded-md"
 				onSubmit={handleSubmit}
@@ -74,7 +79,7 @@ const RegistrationForm = () => {
 					type="submit"
 					className="bg-orange-300 mt-4 rounded flex justify-center items-center w-36"
 				>
-					Register
+					Create Account
 				</button>
 			</form>
 			<SocialLogin />

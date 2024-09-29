@@ -22,10 +22,19 @@ export const POST = async (request: Request) => {
 
 	// update the DB
 	try {
-		await createUser(newUser);
-		console.log('created user', newUser);
+		const res = await createUser(newUser);
+
+		// error code 11000 is duplicate key (email) meaning account already exists
+		if (res?.error?.code == 11000) {
+			return new NextResponse(res.error.errorResponse.errmsg, {
+				status: 500,
+				statusText: 'userAlreadyExists',
+			});
+		}
+
+		if (res.error) throw res.error;
 	} catch (error: any) {
-		return new NextResponse(error.message, {
+		return new NextResponse(error.errorResponse.errmsg, {
 			status: 500,
 		});
 	}

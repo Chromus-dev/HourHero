@@ -21,7 +21,7 @@ const userSchema = new Schema<UserDocument>({
 		],
 	},
 	password: {
-		required: true,
+		required: false,
 		type: String,
 	},
 });

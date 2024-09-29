@@ -8,7 +8,7 @@ const Dashboard = async () => {
 
 	if (!session?.user) redirect('/');
 
-	console.log(session?.user);
+	// console.log(session?.user);
 
 	return (
 		<div className="flex flex-col items-center m-4">

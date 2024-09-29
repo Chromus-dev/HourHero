@@ -30,7 +30,7 @@ const LoginForm = () => {
 			}
 		} catch (e) {
 			console.error(e);
-			setError('Check your credentials');
+			setError('Check your email or password');
 		}
 	}
 
@@ -66,7 +66,7 @@ const LoginForm = () => {
 					type="submit"
 					className="bg-orange-300 mt-4 rounded flex justify-center items-center w-36"
 				>
-					Ceredential Login
+					Login
 				</button>
 			</form>
 			<SocialLogin />

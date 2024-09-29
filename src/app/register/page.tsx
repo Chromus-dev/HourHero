@@ -6,9 +6,8 @@ const RegisterPage = () => {
 		<div className="flex flex-col justify-center items-center m-4">
 			<RegistrationForm />
 			<p className="my-3">
-				Already have an account?
 				<Link href="/" className="mx-2 underline">
-					Login
+					Already have an account?
 				</Link>
 			</p>
 		</div>

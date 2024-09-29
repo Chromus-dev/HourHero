@@ -8,9 +8,8 @@ export default function Login() {
 			<LoginForm />
 
 			<p className="my-3">
-				Don&apos;t have an account?
 				<Link href="register" className="mx-2 underline">
-					Register
+					Don&apos;t have an account?
 				</Link>
 			</p>
 		</div>

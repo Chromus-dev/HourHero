@@ -7,6 +7,7 @@ import bcrypt from 'bcryptjs';
 
 import { authConfig } from '@/auth.config';
 import { Provider } from 'next-auth/providers';
+import { createUser, getUserByEmail } from '@/queries/users';
 
 const providers: Provider[] = [
 	GoogleProvider({
@@ -29,7 +30,7 @@ const providers: Provider[] = [
 				if (user) {
 					const isMatch = await bcrypt.compare(
 						credentials.password as string,
-						user.password
+						user?.password
 					);
 
 					if (isMatch) return user;
@@ -62,6 +63,26 @@ export const {
 } = NextAuth({
 	...authConfig,
 	providers,
+	callbacks: {
+		async signIn({ user, account }) {
+			// if its a google signin, see if were already in the DB and if not lets get in there
+			if (account?.provider === 'google') {
+				//@ts-ignore - promise we'll have an email
+				let dbUser = await getUserByEmail(user?.email);
+
+				if (dbUser !== null) return true; // yippie we already got a user in there
+
+				dbUser = await createUser({
+					name: user.name,
+					email: user.email,
+				});
+
+				return true;
+			} else {
+				return true;
+			}
+		},
+	},
 	// pages: {
 	// 	signIn: '/signin',
 	// },
