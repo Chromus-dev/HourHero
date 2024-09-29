@@ -2,8 +2,6 @@
 
 import { signIn, signOut } from '@/auth';
 
-export const maxDuration = 20;
-
 export async function doSocialLogin(formData: any) {
 	const action = formData.get('action');
 
