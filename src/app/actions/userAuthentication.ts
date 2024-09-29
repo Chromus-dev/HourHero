@@ -22,6 +22,9 @@ export async function doCredentialLogin(formData: FormData) {
 			redirect: false,
 		});
 
+		console.log('cred login attempted');
+		console.log(JSON.stringify(response));
+
 		return response;
 	} catch (err) {
 		throw new Error(err as any);
