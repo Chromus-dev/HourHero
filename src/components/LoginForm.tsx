@@ -32,6 +32,7 @@ const LoginForm = () => {
 			}
 		} catch (e) {
 			console.error(e);
+			console.log('we errored in credential login');
 			setError('Check your email or password');
 		}
 	}
