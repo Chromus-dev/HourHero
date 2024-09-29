@@ -11,6 +11,8 @@ import { useState } from 'react';
 
 // const csrfToken = cookies().get('authjs.csrf-token')?.value ?? '';
 
+export const maxDuration = 20;
+
 const LoginForm = () => {
 	const [error, setError] = useState('');
 	const router = useRouter();
