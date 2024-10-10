@@ -3,7 +3,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 import { User } from '@/models/User';
-import bcrypt from 'bcryptjs';
+import { verify } from '@node-rs/argon2';
 
 import { authConfig } from '@/auth.config';
 import { Provider } from 'next-auth/providers';
@@ -28,9 +28,15 @@ const providers: Provider[] = [
 				});
 
 				if (user) {
-					const isMatch = await bcrypt.compare(
+					const isMatch = await verify(
+						user?.password,
 						credentials.password as string,
-						user?.password
+						{
+							memoryCost: 19456,
+							timeCost: 2,
+							outputLen: 32,
+							parallelism: 1,
+						}
 					);
 
 					if (isMatch) return user;

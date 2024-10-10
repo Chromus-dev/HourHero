@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { createUser } from '@/queries/users';
 import { dbConnection } from '@/lib/mongo';
 
-import bcrypt from 'bcryptjs';
+import { hash } from '@node-rs/argon2';
 
 export const POST = async (request: Request) => {
 	const { name, email, password } = await request.json();
@@ -11,7 +11,13 @@ export const POST = async (request: Request) => {
 	await dbConnection();
 
 	// encryt password
-	const hashedPassword = await bcrypt.hash(password, 5);
+	const hashedPassword = await hash(password, {
+		// recommended minimum parameters
+		memoryCost: 19456,
+		timeCost: 2,
+		outputLen: 32,
+		parallelism: 1,
+	});
 
 	// form a DB payload
 	const newUser = {
