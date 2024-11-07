@@ -2,11 +2,10 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-
-import { dbConnection } from '@/lib/mongo';
-
-import mongoose from 'mongoose';
-import { Provider } from './provider';
+import { Toaster } from '@/components/ui/toaster';
+import { ThemeProvider } from '@/providers/ThemeProvider';
+import { SessionProvider } from '@/providers/SessionProvider';
+import { auth } from '@/lib/auth';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,31 +19,24 @@ export default async function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	const connection = await dbConnection();
-
-	mongoose.connection.on('connected', () =>
-		console.log('mongoose connected')
-	);
-	mongoose.connection.on('open', () => console.log('mongoose open'));
-	mongoose.connection.on('disconnected', () =>
-		console.log('mongoose disconnected')
-	);
-	mongoose.connection.on('reconnected', () =>
-		console.log('mongoose reconnected')
-	);
-	mongoose.connection.on('disconnecting', () =>
-		console.log('mongoose disconnecting')
-	);
-	mongoose.connection.on('close', () => console.log('mongoose close'));
+	const sessionData = await auth();
 
 	return (
-		<html lang="en">
-			<Provider>
-				<body className={inter.className}>
-					{children}
-					<SpeedInsights />
-				</body>
-			</Provider>
+		<html lang="en" suppressHydrationWarning>
+			<body className={inter.className}>
+				<SessionProvider value={sessionData}>
+					<ThemeProvider
+						attribute="class"
+						defaultTheme="light"
+						enableSystem
+						disableTransitionOnChange
+					>
+						{children}
+						<Toaster />
+						<SpeedInsights />
+					</ThemeProvider>
+				</SessionProvider>
+			</body>
 		</html>
 	);
 }
