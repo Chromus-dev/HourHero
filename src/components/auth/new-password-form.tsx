@@ -34,6 +34,7 @@ export const NewPasswordForm = () => {
 		resolver: zodResolver(NewPasswordSchema),
 		defaultValues: {
 			password: '',
+			confirmPassword: '',
 		},
 	});
 
@@ -71,6 +72,24 @@ export const NewPasswordForm = () => {
 						<FormField
 							control={form.control}
 							name="password"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Password</FormLabel>
+									<FormControl>
+										<Input
+											{...field}
+											disabled={isPending}
+											type="password"
+											placeholder="********"
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="confirmPassword"
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>Password</FormLabel>

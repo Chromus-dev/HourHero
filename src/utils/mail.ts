@@ -1,9 +1,5 @@
 import nodemailer from 'nodemailer';
 
-//! migrate to nodemailer so I can use gmail
-// https://www.youtube.com/watch?app=desktop&v=oujAYWgYwtM&sttick=0
-// https://github.com/zinotrust/nextjs-email-tutorial/blob/master/app/api/sendEmail/route.js
-
 const domain = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const sendEmail = async (

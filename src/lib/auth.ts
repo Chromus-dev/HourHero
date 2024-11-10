@@ -4,7 +4,7 @@ import { cache } from 'react';
 import { adapter } from './adapter';
 
 export const lucia = new Lucia(adapter, {
-	sessionExpiresIn: new TimeSpan(30, 'd'), //cookies and session will expire in 30 days
+	sessionExpiresIn: new TimeSpan(15, 'd'), //cookies and session will expire in 15 days
 	sessionCookie: {
 		name: 'auth',
 		attributes: {

@@ -1,6 +1,6 @@
 'use server';
 import { lucia } from '@lib/auth';
-import db from '@lib/db';
+// import db from '@lib/db';
 import { EmailVerification } from '@lib/models/email-verification.model';
 import { User } from '@lib/models/user.model';
 import { getUserByEmail } from '@utils/data/user';

@@ -16,7 +16,7 @@ import {
 } from '../ui/form';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { signUp } from '@/actions/auth.action';
 import { FromError } from './form-error';
 import { FormSuccess } from './form-success';
@@ -51,13 +51,16 @@ export const RegisterForm = () => {
 
 		startTransition(() => {
 			signUp(values).then((data) => {
-				// if (data.success) {
-				//   setSuccess(data.success);
-				//   form.reset();
-				// }
-				if (data?.verifyEmail) {
-					setVerifyEmail(true);
+				if (data.success) {
+					// setSuccess(data.success);
+
+					redirect('/dashboard');
+
+					// form.reset();
 				}
+				// if (data?.verifyEmail) {
+				// 	setVerifyEmail(true);
+				// }
 				setError(data.error);
 			});
 		});

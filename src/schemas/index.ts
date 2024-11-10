@@ -30,8 +30,16 @@ export const ResetSchema = z.object({
 	}),
 });
 // New Password Schema
-export const NewPasswordSchema = z.object({
-	password: z.string().min(6, {
-		message: 'Minimum 6 characters required',
-	}),
-});
+export const NewPasswordSchema = z
+	.object({
+		password: z
+			.string()
+			.min(8, { message: 'Password must be at least 8 characters long' }),
+		confirmPassword: z
+			.string()
+			.min(8, { message: 'Password must be at least 8 characters long' }),
+	})
+	.refine((data) => data.password === data.confirmPassword, {
+		message: 'Passwords do not match',
+		path: ['confirmPassword'],
+	});

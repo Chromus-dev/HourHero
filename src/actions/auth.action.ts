@@ -21,7 +21,7 @@ import { getUserByEmail } from '@utils/data/user';
 import { generateCodeVerifier, generateState } from 'arctic';
 import { google } from '@lib/oauth';
 import { getPasswordResetTokenByToken } from '@utils/data/password-reset-token';
-import db from '@lib/db';
+// import db from '@lib/db';
 import { PasswordResetToken } from '@lib/models/password-reset-token.model';
 
 export const signUp = async (values: z.infer<typeof SignUpSchema>) => {
@@ -40,21 +40,40 @@ export const signUp = async (values: z.infer<typeof SignUpSchema>) => {
 		return { error: 'User already exists' };
 	}
 
-	await User.create({
+	const newUser = await User.create({
 		email,
 		password: hashedPassword,
 		name,
+
+		// disable account verification via email cus of school accounts not being able to recieve emails
+		emailVerified: true,
 	});
-	const verificationToken = await generateVerificationToken(email);
-	// send mail
-	await sendVerificationEmail(
-		verificationToken.email,
-		verificationToken.token
+
+	// redirect to dashboard
+	const session = await lucia.createSession(newUser._id, {});
+
+	const sessionCookie = lucia.createSessionCookie(session.id);
+	//@ts-ignore
+	cookies().set(
+		sessionCookie.name,
+		sessionCookie.value,
+		sessionCookie.attributes
 	);
 
 	return {
-		verifyEmail: 'Confirmation email sent!',
+		success: 'Account created Successfully',
 	};
+
+	// const verificationToken = await generateVerificationToken(email);
+	// // send mail
+	// await sendVerificationEmail(
+	// 	verificationToken.email,
+	// 	verificationToken.token
+	// );
+
+	// return {
+	// 	verifyEmail: 'Confirmation email sent!',
+	// };
 };
 
 export const signIn = async (values: z.infer<typeof SignInSchema>) => {
