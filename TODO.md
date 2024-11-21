@@ -4,7 +4,6 @@ way too much to do
 
 ### Todo
 
--   [ ] everything
 -   [ ] get gmail account for auth system (or do we just yolo with personal account)
 -   [ ] join a organization
     -   [ ] input code or link?

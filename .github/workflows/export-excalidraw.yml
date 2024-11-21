@@ -1,0 +1,44 @@
+name: Export Excalidraw Files
+
+on:
+    push:
+        paths:
+            - 'excalidraw/*.excalidraw' # Match any excalidraw file in the 'excalidraw' folder
+    pull_request:
+        paths:
+            - 'excalidraw/*.excalidraw' # Match any excalidraw file in the 'excalidraw' folder
+
+jobs:
+    export_images:
+        runs-on: ubuntu-latest
+
+        steps:
+            # Step 1: Checkout the repository
+            - name: Checkout code
+              uses: actions/checkout@v3
+
+            # Step 2: Set up Node.js environment
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '16' # Use the latest LTS version or one that suits your needs
+
+            # Step 3: Install dependencies
+            - name: Install dependencies
+              run: |
+                  npm install
+
+            # Step 4: Run the export script
+            - name: Export Excalidraw Files
+              run: |
+                  node excalidraw/exportExcalidraw.js
+
+            # Optional Step 5: Commit and push exported images back to the repository
+            - name: Push Exported Images
+              if: success() # Only push if the export was successful
+              run: |
+                  git config --global user.name "GitHub Actions"
+                  git config --global user.email "actions@github.com"
+                  git add excalidraw/img/
+                  git commit -m "Exported Excalidraw images"
+                  git push
